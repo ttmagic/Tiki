@@ -62,13 +62,6 @@ data class Inventory(
     val product_virtual_type: Any
 )
 
-data class Category(
-    val id: Int,
-    val name: String,
-    val query_value: String,
-    val thumbnail_url: String
-)
-
 data class Tab(
     val active: Boolean,
     val display: String,

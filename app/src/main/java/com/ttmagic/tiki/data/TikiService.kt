@@ -2,6 +2,7 @@ package com.ttmagic.tiki.data
 
 import com.ttmagic.tiki.base.Result
 import com.ttmagic.tiki.model.BannerResponse
+import com.ttmagic.tiki.model.CategoryResponse
 import com.ttmagic.tiki.model.FlashDealResponse
 import com.ttmagic.tiki.model.QuickLinkResponse
 import retrofit2.http.GET
@@ -16,4 +17,7 @@ interface TikiService {
 
     @GET("v2/widget/deals/hot")
     suspend fun getFlashDeal(): Result<FlashDealResponse>
+
+    @GET("v2/categories?parent_id=2")
+    suspend fun getCategories(): Result<CategoryResponse>
 }

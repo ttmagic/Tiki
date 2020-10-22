@@ -31,7 +31,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             controller.setData(
                 vm.listBanners.value,
                 vm.listQuickLinks.value,
-                vm.listFlashDeal.value
+                vm.listFlashDeal.value,
+                vm.listCategories.value
             )
             swipeRefreshLayout.isRefreshing = false
         })
@@ -48,6 +49,9 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
         controller.onFlashDealClick = {
             navigate("https://tiki.vn/${it.product.url_path}")
+        }
+        controller.onCategoryClick = {
+            navigate("https://tiki.vn/${it.url_key}")
         }
     }
 
