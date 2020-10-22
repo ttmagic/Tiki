@@ -15,8 +15,13 @@ abstract class QuickLinkItemModel : BaseEpoxyModel() {
     @EpoxyAttribute
     lateinit var quickLink: QuickLink
 
+    @EpoxyAttribute(EpoxyAttribute.Option.DoNotHash)
+    lateinit var onItemClick: (QuickLink) -> Unit
+
     override fun bind(holder: EpoxyBaseViewHolder) {
         holder.itemView.apply {
+            setOnClickListener { onItemClick(quickLink) }
+
             tvName.text = quickLink.title
             Glide.with(context)
                 .load(quickLink.image_url)

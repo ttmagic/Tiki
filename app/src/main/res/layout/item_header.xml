@@ -12,8 +12,8 @@
         android:layout_height="wrap_content"
         android:paddingStart="10dp"
         android:paddingTop="5dp"
-        android:paddingBottom="2dp"
         android:paddingEnd="10dp"
+        android:paddingBottom="2dp"
         tools:background="@color/purple_500">
 
         <ImageView
@@ -60,8 +60,10 @@
                 android:background="@color/white"
                 android:drawableStart="@drawable/ic_search"
                 android:drawablePadding="10dp"
-                android:hint="Bạn tìm gì hôm nay..."
+                android:hint="Bạn tìm gì hôm nay?"
+                android:maxLines="1"
                 android:padding="10dp"
+                android:singleLine="true"
                 android:textSize="14sp" />
         </com.google.android.material.card.MaterialCardView>
 

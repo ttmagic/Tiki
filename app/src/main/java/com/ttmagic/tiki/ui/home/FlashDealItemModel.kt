@@ -17,8 +17,13 @@ abstract class FlashDealItemModel : BaseEpoxyModel() {
     @EpoxyAttribute
     lateinit var flashDeal: FlashDeal
 
+    @EpoxyAttribute(EpoxyAttribute.Option.DoNotHash)
+    lateinit var onItemClick: (FlashDeal) -> Unit
+
     override fun bind(holder: EpoxyBaseViewHolder) {
         holder.itemView.apply {
+            setOnClickListener { onItemClick.invoke(flashDeal) }
+
             tvDiscount.text = "-${flashDeal.discount_percent}%"
             tvProductPrice.text =
                 String.format(resources.getString(R.string.format_price), flashDeal.special_price)

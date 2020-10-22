@@ -15,8 +15,12 @@ abstract class BannerModel : BaseEpoxyModel() {
     @EpoxyAttribute
     lateinit var banner: Banner
 
+    @EpoxyAttribute(EpoxyAttribute.Option.DoNotHash)
+    lateinit var onItemClick: (Banner) -> Unit
+
     override fun bind(holder: EpoxyBaseViewHolder) {
         holder.itemView.apply {
+            setOnClickListener { onItemClick(banner) }
             Glide.with(context)
                 .load(banner.image_url)
                 .into(iv)

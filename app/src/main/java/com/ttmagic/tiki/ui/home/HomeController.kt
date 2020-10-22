@@ -13,10 +13,12 @@ import javax.inject.Inject
 class HomeController @Inject constructor() : EpoxyController() {
 
     private var banners: Result<List<Banner>>? = null
-
     private var quickLinks: Result<List<QuickLink>>? = null
-
     private var flashDeals: Result<List<FlashDeal>>? = null
+
+    var onBannerClick: ((Banner) -> Unit)? = null
+    var onQuickLinkClick: ((QuickLink) -> Unit)? = null
+    var onFlashDealClick: ((FlashDeal) -> Unit)? = null
 
     fun setData(
         banners: Result<List<Banner>>?,
@@ -52,6 +54,7 @@ class HomeController @Inject constructor() : EpoxyController() {
                         BannerModel_()
                             .id("banner_$i")
                             .banner(item)
+                            .onItemClick { onBannerClick?.invoke(it) }
                     }
                 }
             }
@@ -75,6 +78,7 @@ class HomeController @Inject constructor() : EpoxyController() {
                     withModelsFromIndexed(quickLinks!!.data!!) { i, item ->
                         QuickLinkItemModel_().id("quicklink_$i")
                             .quickLink(item)
+                            .onItemClick { onQuickLinkClick?.invoke(it) }
                     }
                 }
             }
@@ -102,6 +106,7 @@ class HomeController @Inject constructor() : EpoxyController() {
                     withModelsFromIndexed(flashDeals!!.data!!) { i, item ->
                         FlashDealItemModel_().id("flashdeal_$i")
                             .flashDeal(item)
+                            .onItemClick { onFlashDealClick?.invoke(it) }
                     }
                 }
             }
