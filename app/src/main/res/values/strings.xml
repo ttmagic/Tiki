@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Tiki</string>
+    <string name="format_price">%,d ₫</string>
 </resources>

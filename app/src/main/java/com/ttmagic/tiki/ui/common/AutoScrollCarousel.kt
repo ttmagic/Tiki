@@ -1,4 +1,4 @@
-package com.ttmagic.tiki.ui
+package com.ttmagic.tiki.ui.common
 
 import android.content.Context
 import android.util.AttributeSet

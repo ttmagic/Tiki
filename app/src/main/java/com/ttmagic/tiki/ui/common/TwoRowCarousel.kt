@@ -1,9 +1,12 @@
-package com.ttmagic.tiki.ui
+package com.ttmagic.tiki.ui.common
 
 import android.content.Context
 import android.util.AttributeSet
+import androidx.annotation.DrawableRes
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.airbnb.epoxy.AfterPropsSet
+import com.airbnb.epoxy.CallbackProp
 import com.airbnb.epoxy.Carousel
 import com.airbnb.epoxy.ModelView
 
@@ -13,11 +16,21 @@ class TwoRowCarousel @JvmOverloads constructor(
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
 ) : Carousel(context, attrs, defStyleAttr) {
+
+    @DrawableRes
+    var backgroundRes: Int? = null
+        @CallbackProp set
+
     init {
         isNestedScrollingEnabled = false
     }
 
     override fun createLayoutManager(): LayoutManager {
         return GridLayoutManager(context, 2, RecyclerView.HORIZONTAL, false)
+    }
+
+    @AfterPropsSet
+    fun useProps() {
+        backgroundRes?.let { this.setBackgroundResource(it) }
     }
 }

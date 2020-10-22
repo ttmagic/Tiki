@@ -1,7 +1,6 @@
-package com.ttmagic.tiki.ui
+package com.ttmagic.tiki.ui.home
 
 import android.app.Application
-import android.util.Log
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MediatorLiveData
@@ -15,7 +14,6 @@ import com.ttmagic.tiki.model.Banner
 import com.ttmagic.tiki.model.FlashDeal
 import com.ttmagic.tiki.model.QuickLink
 import kotlinx.coroutines.async
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
@@ -40,7 +38,6 @@ class HomeVm
         listBanners.value = null
         listQuickLinks.value = null
         listFlashDeal.value = null
-        Log.d("TTmagic", "refreshHome")
 
         async {
             async { getBanner() }
@@ -51,26 +48,15 @@ class HomeVm
     }
 
     private suspend fun getBanner(){
-        Log.d("TTmagic", "getBanner")
         getBannerUseCase(Unit).collect { listBanners.postValue(it) }
     }
 
     private suspend fun getQuickLink() {
-        Log.d("TTmagic", "getQuickLink")
         getQuickLinkUseCase(Unit).collect { listQuickLinks.postValue(it) }
     }
 
     private fun getFlashDeal() = viewModelScope.launch {
-        Log.d("TTmagic", "getFlashDeal")
         getFlashDealUseCase(Unit).collect { listFlashDeal.postValue(it) }
     }
 
 }
-
-/**
- * Post Value into a liveData when collect.
- */
-suspend fun <T> Flow<T>.onCollectPostValue(liveData: MutableLiveData<T>) {
-    this.collect { liveData.postValue(it) }
-}
-

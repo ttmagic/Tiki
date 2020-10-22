@@ -5,6 +5,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.*
 import androidx.databinding.BindingAdapter
+import androidx.lifecycle.MutableLiveData
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
 
 
 @BindingAdapter("app:addStatusBarPadding")
@@ -24,4 +27,15 @@ fun Context.getStatusBarHeight(): Int {
         result = resources.getDimensionPixelSize(resourceId)
     }
     return result
+}
+
+fun Int?.dpToPx(context: Context): Int {
+    return (this ?: 0) * context.resources.displayMetrics.density.toInt()
+}
+
+/**
+ * Post Value into a liveData when collect.
+ */
+suspend fun <T> Flow<T>.onCollectPostValue(liveData: MutableLiveData<T>) {
+    this.collect { liveData.postValue(it) }
 }

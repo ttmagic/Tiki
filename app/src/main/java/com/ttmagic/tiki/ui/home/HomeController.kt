@@ -1,14 +1,13 @@
 package com.ttmagic.tiki.ui.home
 
 import com.airbnb.epoxy.EpoxyController
+import com.ttmagic.tiki.R
 import com.ttmagic.tiki.base.Result
 import com.ttmagic.tiki.base.data
 import com.ttmagic.tiki.model.Banner
 import com.ttmagic.tiki.model.FlashDeal
 import com.ttmagic.tiki.model.QuickLink
-import com.ttmagic.tiki.ui.autoScrollCarousel
-import com.ttmagic.tiki.ui.twoRowCarousel
-import com.ttmagic.tiki.withModelsFromIndexed
+import com.ttmagic.tiki.ui.common.*
 import javax.inject.Inject
 
 class HomeController @Inject constructor() : EpoxyController() {
@@ -17,6 +16,8 @@ class HomeController @Inject constructor() : EpoxyController() {
 
     private var quickLinks: Result<List<QuickLink>>? = null
 
+    private var flashDeals: Result<List<FlashDeal>>? = null
+
     fun setData(
         banners: Result<List<Banner>>?,
         quickLinks: Result<List<QuickLink>>?,
@@ -24,6 +25,7 @@ class HomeController @Inject constructor() : EpoxyController() {
     ) {
         this.banners = banners
         this.quickLinks = quickLinks
+        this.flashDeals = flashDeals
         requestModelBuild()
     }
 
@@ -33,33 +35,90 @@ class HomeController @Inject constructor() : EpoxyController() {
         }
         buildBanners()
         buildQuickLinks()
+        buildFlashDeal()
     }
 
     private fun buildBanners() {
-        if (banners?.data.isNullOrEmpty()) return
-
-        autoScrollCarousel {
-            id("banner_carousel")
-            withModelsFromIndexed(banners!!.data!!) { i, item ->
-                BannerModel_()
-                    .id("banner_$i")
-                    .banner(item)
+        when (banners) {
+            is Result.Loading -> {
+                loading {
+                    id("loading_banner")
+                }
+            }
+            is Result.Success -> {
+                autoScrollCarousel {
+                    id("banner_carousel")
+                    withModelsFromIndexed(banners!!.data!!) { i, item ->
+                        BannerModel_()
+                            .id("banner_$i")
+                            .banner(item)
+                    }
+                }
+            }
+            else -> {//Do nothing
             }
         }
     }
 
     private fun buildQuickLinks() {
-        if (quickLinks?.data.isNullOrEmpty()) return
-        twoRowCarousel {
-            paddingDp(10)
-            id("quicklink_carousel")
-            withModelsFromIndexed(quickLinks!!.data!!) { i, item ->
-                QuickLinkItemModel_().id("quicklink_$i")
-                    .quickLink(item)
+        when (quickLinks) {
+            is Result.Loading -> {
+                loading {
+                    id("loading_quicklink")
+                }
+            }
+            is Result.Success -> {
+                twoRowCarousel {
+                    id("quicklink_carousel")
+                    backgroundRes(R.color.white)
+                    paddingDp(10)
+                    withModelsFromIndexed(quickLinks!!.data!!) { i, item ->
+                        QuickLinkItemModel_().id("quicklink_$i")
+                            .quickLink(item)
+                    }
+                }
+            }
+            else -> {//Do nothing
             }
         }
+
     }
 
+    private fun buildFlashDeal() {
+        if (flashDeals == null) return
+        addDivider()
+        flashDealSectionHeader { id("flashdeal_header") }
+        when (flashDeals) {
+            is Result.Loading -> {
+                loading {
+                    id("loading_flashdeal")
+                }
+            }
+            is Result.Success -> {
+                carousel {
+                    id("flashdeal_carousel")
+                    paddingDp(10)
+                    numViewsToShowOnScreen(3f)
+                    withModelsFromIndexed(flashDeals!!.data!!) { i, item ->
+                        FlashDealItemModel_().id("flashdeal_$i")
+                            .flashDeal(item)
+                    }
+                }
+            }
+            else -> {//Do nothing
+            }
+        }
+        addDivider()
+    }
+
+
+    private fun addDivider() {
+        epoxyDivider {
+            id("divider")
+            heightDp(10)
+            backgroundRes(R.color.light_gray)
+        }
+    }
 
 }
 

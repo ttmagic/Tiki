@@ -6,6 +6,6 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.ttmagic.tiki.ui.HomeFragment"
+        android:name="com.ttmagic.tiki.ui.home.HomeFragment"
         android:label="HomeFragment" />
 </navigation>

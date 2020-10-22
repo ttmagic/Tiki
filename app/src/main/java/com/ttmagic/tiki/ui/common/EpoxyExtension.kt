@@ -1,11 +1,9 @@
-package com.ttmagic.tiki
+package com.ttmagic.tiki.ui.common
 
 import com.airbnb.epoxy.CarouselModelBuilder
 import com.airbnb.epoxy.CarouselModel_
 import com.airbnb.epoxy.EpoxyController
 import com.airbnb.epoxy.EpoxyModel
-import com.ttmagic.tiki.ui.AutoScrollCarouselModelBuilder
-import com.ttmagic.tiki.ui.TwoRowCarouselModelBuilder
 
 /** For use in the buildModels method of EpoxyController. A shortcut for creating a Carousel model, initializing it, and adding it to the controller.
  *
