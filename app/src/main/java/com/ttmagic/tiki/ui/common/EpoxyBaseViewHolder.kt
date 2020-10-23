@@ -1,4 +1,4 @@
-package com.ttmagic.tiki.base.epoxy
+package com.ttmagic.tiki.ui.common
 
 import android.view.View
 import com.airbnb.epoxy.EpoxyHolder

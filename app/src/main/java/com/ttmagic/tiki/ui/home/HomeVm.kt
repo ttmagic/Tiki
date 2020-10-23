@@ -70,7 +70,7 @@ class HomeVm
     }
 
     private fun getProducts() = viewModelScope.launch {
-        val param = ProductQuery(page = 0, limit = 16)
+        val param = ProductQuery(page = 0, limit = 20)
         getProductUseCase(param).onCollectPostValue(listProducts)
     }
 

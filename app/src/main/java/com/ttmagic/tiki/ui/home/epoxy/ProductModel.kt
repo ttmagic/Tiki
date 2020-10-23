@@ -1,19 +1,19 @@
-package com.ttmagic.tiki.ui.home
+package com.ttmagic.tiki.ui.home.epoxy
 
 import com.airbnb.epoxy.EpoxyAttribute
 import com.airbnb.epoxy.EpoxyModelClass
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.ttmagic.tiki.R
-import com.ttmagic.tiki.base.epoxy.BaseEpoxyModel
-import com.ttmagic.tiki.base.epoxy.EpoxyBaseViewHolder
+import com.ttmagic.tiki.ui.common.BaseEpoxyModel
+import com.ttmagic.tiki.ui.common.EpoxyBaseViewHolder
 import com.ttmagic.tiki.dpToPx
 import com.ttmagic.tiki.formatDiscount
 import com.ttmagic.tiki.model.Product
 import kotlinx.android.synthetic.main.item_product.view.*
 
 @EpoxyModelClass(layout = R.layout.item_product)
-abstract class ProductItemModel : BaseEpoxyModel() {
+abstract class ProductModel : BaseEpoxyModel() {
 
     @EpoxyAttribute
     lateinit var product: Product

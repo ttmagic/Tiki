@@ -1,11 +1,11 @@
-package com.ttmagic.tiki.ui.home
+package com.ttmagic.tiki.ui.home.epoxy
 
 import com.airbnb.epoxy.EpoxyAttribute
 import com.airbnb.epoxy.EpoxyModelClass
 import com.bumptech.glide.Glide
 import com.ttmagic.tiki.R
-import com.ttmagic.tiki.base.epoxy.BaseEpoxyModel
-import com.ttmagic.tiki.base.epoxy.EpoxyBaseViewHolder
+import com.ttmagic.tiki.ui.common.BaseEpoxyModel
+import com.ttmagic.tiki.ui.common.EpoxyBaseViewHolder
 import com.ttmagic.tiki.model.Banner
 import kotlinx.android.synthetic.main.item_banner.view.*
 

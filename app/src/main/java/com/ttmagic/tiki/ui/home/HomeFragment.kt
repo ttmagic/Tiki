@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import com.ttmagic.tiki.R
 import com.ttmagic.tiki.dpToPx
 import com.ttmagic.tiki.setAddStatusBarPadding
+import com.ttmagic.tiki.ui.home.epoxy.HomeController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.item_header.*
@@ -43,6 +44,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
         swipeRefreshLayout.setOnRefreshListener {
             vm.refreshHome()
+        }
+
+        ivCart.setOnClickListener {
+            navigate("https://tiki.vn/checkout/cart")
         }
 
         controller.onBannerClick = {

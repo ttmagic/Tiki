@@ -1,12 +1,10 @@
-package com.ttmagic.tiki.ui.home
+package com.ttmagic.tiki.ui.common
 
 import android.view.View
 import com.airbnb.epoxy.EpoxyAttribute
 import com.airbnb.epoxy.EpoxyModelClass
 import com.bumptech.glide.Glide
 import com.ttmagic.tiki.R
-import com.ttmagic.tiki.base.epoxy.BaseEpoxyModel
-import com.ttmagic.tiki.base.epoxy.EpoxyBaseViewHolder
 import kotlinx.android.synthetic.main.item_section_header.view.*
 
 @EpoxyModelClass(layout = R.layout.item_section_header)
