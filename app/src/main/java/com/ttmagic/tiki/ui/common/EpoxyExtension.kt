@@ -61,3 +61,10 @@ inline fun <T> TwoRowCarouselModelBuilder.withModelsFromIndexed(
 ) {
     models(items.mapIndexed { index, item -> modelBuilder(index, item) })
 }
+
+inline fun <T> TwoRowGridModelBuilder.withModelsFromIndexed(
+    items: List<T>,
+    modelBuilder: (Int, T) -> EpoxyModel<*>
+) {
+    models(items.mapIndexed { index, item -> modelBuilder(index, item) })
+}

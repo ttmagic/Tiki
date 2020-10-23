@@ -4,10 +4,7 @@ import com.airbnb.epoxy.EpoxyController
 import com.ttmagic.tiki.R
 import com.ttmagic.tiki.base.Result
 import com.ttmagic.tiki.base.data
-import com.ttmagic.tiki.model.Banner
-import com.ttmagic.tiki.model.Category
-import com.ttmagic.tiki.model.FlashDeal
-import com.ttmagic.tiki.model.QuickLink
+import com.ttmagic.tiki.model.*
 import com.ttmagic.tiki.ui.common.*
 import javax.inject.Inject
 
@@ -17,33 +14,35 @@ class HomeController @Inject constructor() : EpoxyController() {
     private var quickLinks: Result<List<QuickLink>>? = null
     private var flashDeals: Result<List<FlashDeal>>? = null
     private var categories: Result<List<Category>>? = null
+    private var products: Result<List<Product>>? = null
 
     var onBannerClick: ((Banner) -> Unit)? = null
     var onQuickLinkClick: ((QuickLink) -> Unit)? = null
     var onFlashDealClick: ((FlashDeal) -> Unit)? = null
     var onCategoryClick: ((Category) -> Unit)? = null
+    var onProductClick: ((Product) -> Unit)? = null
 
     fun setData(
         banners: Result<List<Banner>>?,
         quickLinks: Result<List<QuickLink>>?,
         flashDeals: Result<List<FlashDeal>>?,
-        categories:Result<List<Category>>?
+        categories: Result<List<Category>>?,
+        products: Result<List<Product>>?
     ) {
         this.banners = banners
         this.quickLinks = quickLinks
         this.flashDeals = flashDeals
         this.categories = categories
+        this.products = products
         requestModelBuild()
     }
 
     override fun buildModels() {
-        header {
-            id("header")
-        }
         buildBanners()
         buildQuickLinks()
         buildFlashDeal()
         buildCategories()
+        buildProducts()
     }
 
     private fun buildBanners() {
@@ -108,6 +107,9 @@ class HomeController @Inject constructor() : EpoxyController() {
                     id("flashdeal_carousel")
                     paddingDp(5)
                     numViewsToShowOnScreen(3f)
+                    onBind { _, view, _ ->
+                        view.setBackgroundResource(R.color.white)
+                    }
                     withModelsFromIndexed(flashDeals!!.data!!) { i, item ->
                         FlashDealItemModel_().id("flashdeal_$i")
                             .flashDeal(item)
@@ -132,12 +134,13 @@ class HomeController @Inject constructor() : EpoxyController() {
             is Result.Success -> {
                 sectionHeader {
                     id("category_header")
-                    title("Danh mục sản phẩm")
+                    title("Danh Mục Nổi Bật")
                 }
-                carousel {
+                twoRowCarousel {
                     id("category_carousel")
                     paddingDp(5)
-                    numViewsToShowOnScreen(5f)
+                    numViewsToShowOnScreen(4f)
+                    backgroundRes(R.color.white)
 
                     withModelsFromIndexed(categories!!.data!!) { i, item ->
                         CategoryItemModel_().id("category_$i")
@@ -145,8 +148,33 @@ class HomeController @Inject constructor() : EpoxyController() {
                             .onItemClick { onCategoryClick?.invoke(it) }
                     }
                 }
+                addDivider()
             }
             else -> {//Do nothing
+            }
+        }
+    }
+
+    private fun buildProducts() {
+        when (products) {
+            is Result.Loading -> {
+                loading {
+                    id("loading_product")
+                }
+            }
+            is Result.Success -> {
+                twoRowGrid {
+                    id("product_grid")
+                    backgroundRes(R.color.white)
+                    withModelsFromIndexed(products!!.data!!){i,item->
+                        ProductItemModel_()
+                            .id("product_$i")
+                            .product(item)
+                            .onItemClick { onProductClick?.invoke(it) }
+                    }
+                }
+            }
+            else -> {
             }
         }
     }

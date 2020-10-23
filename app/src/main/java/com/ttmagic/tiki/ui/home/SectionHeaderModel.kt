@@ -23,6 +23,8 @@ abstract class SectionHeaderModel : BaseEpoxyModel() {
             if (!title.isNullOrBlank()) {
                 customTitle.text = title
                 customTitle.visibility = View.VISIBLE
+            } else {
+                customTitle.visibility = View.GONE
             }
         }
     }

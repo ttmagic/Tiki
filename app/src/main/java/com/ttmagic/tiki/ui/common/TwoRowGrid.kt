@@ -11,7 +11,7 @@ import com.airbnb.epoxy.Carousel
 import com.airbnb.epoxy.ModelView
 
 @ModelView(autoLayout = ModelView.Size.MATCH_WIDTH_WRAP_HEIGHT, saveViewState = true)
-class TwoRowCarousel @JvmOverloads constructor(
+class TwoRowGrid @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
@@ -26,8 +26,7 @@ class TwoRowCarousel @JvmOverloads constructor(
     }
 
     override fun createLayoutManager(): LayoutManager {
-        setItemSpacingDp(5)
-        return GridLayoutManager(context, 2, RecyclerView.HORIZONTAL, false)
+        return GridLayoutManager(context, 2, RecyclerView.VERTICAL, false)
     }
 
     @AfterPropsSet

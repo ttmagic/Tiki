@@ -22,10 +22,6 @@ class AutoScrollCarousel @JvmOverloads constructor(
 
     init {
         isNestedScrollingEnabled = false
-    }
-
-    override fun onAttachedToWindow() {
-        super.onAttachedToWindow()
         startAutoScroll()
     }
 

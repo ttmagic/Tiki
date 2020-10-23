@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Tiki</string>
     <string name="format_price">%,d ₫</string>
+    <string name="format_discount">-%1$d%%</string>
 </resources>

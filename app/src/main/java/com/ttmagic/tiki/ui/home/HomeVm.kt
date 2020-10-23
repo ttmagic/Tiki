@@ -7,14 +7,8 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.ttmagic.tiki.base.Result
-import com.ttmagic.tiki.domain.home.GetBannerUseCase
-import com.ttmagic.tiki.domain.home.GetCategoryUseCase
-import com.ttmagic.tiki.domain.home.GetFlashDealUseCase
-import com.ttmagic.tiki.domain.home.GetQuickLinkUseCase
-import com.ttmagic.tiki.model.Banner
-import com.ttmagic.tiki.model.Category
-import com.ttmagic.tiki.model.FlashDeal
-import com.ttmagic.tiki.model.QuickLink
+import com.ttmagic.tiki.domain.home.*
+import com.ttmagic.tiki.model.*
 import com.ttmagic.tiki.onCollectPostValue
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
@@ -25,18 +19,21 @@ class HomeVm
     private val getBannerUseCase: GetBannerUseCase,
     private val getQuickLinkUseCase: GetQuickLinkUseCase,
     private val getFlashDealUseCase: GetFlashDealUseCase,
-    private val getCategoryUseCase: GetCategoryUseCase
+    private val getCategoryUseCase: GetCategoryUseCase,
+    private val getProductUseCase: GetProductUseCase
 ) : AndroidViewModel(app) {
     val listBanners = MutableLiveData<Result<List<Banner>>>()
     val listQuickLinks = MutableLiveData<Result<List<QuickLink>>>()
     val listFlashDeal = MutableLiveData<Result<List<FlashDeal>>>()
     val listCategories = MutableLiveData<Result<List<Category>>>()
+    val listProducts = MutableLiveData<Result<List<Product>>>()
 
     val onHomeScreenUpdate = MediatorLiveData<String>().apply {
         addSource(listBanners) { value = "listBanners: $it" }
         addSource(listQuickLinks) { value = "listQuickLinks: $it" }
         addSource(listFlashDeal) { value = "listFlashDeal: $it" }
         addSource(listCategories) { value = "listCategories: $it" }
+        addSource(listProducts) { value = "listProducts: $it" }
     }
 
     fun refreshHome() = viewModelScope.launch {
@@ -44,6 +41,7 @@ class HomeVm
         listQuickLinks.value = null
         listFlashDeal.value = null
         listCategories.value = null
+        listProducts.value = null
 
         async {
             async { getBanner() }
@@ -51,6 +49,7 @@ class HomeVm
         }.invokeOnCompletion {
             getFlashDeal()
             getCategories()
+            getProducts()
         }
     }
 
@@ -68,6 +67,11 @@ class HomeVm
 
     private fun getCategories() = viewModelScope.launch {
         getCategoryUseCase(Unit).onCollectPostValue(listCategories)
+    }
+
+    private fun getProducts() = viewModelScope.launch {
+        val param = ProductQuery(page = 0, limit = 16)
+        getProductUseCase(param).onCollectPostValue(listProducts)
     }
 
 }

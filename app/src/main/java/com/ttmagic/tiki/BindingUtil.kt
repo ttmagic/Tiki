@@ -3,11 +3,26 @@ package com.ttmagic.tiki
 import android.content.Context
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.core.view.*
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
+
+
+
+fun TextView.formatDiscount(discount: Int?) {
+    if (discount == null || discount == 0) {
+        visibility = View.INVISIBLE
+    } else {
+        visibility = View.VISIBLE
+        text = String.format(
+            context.getString(R.string.format_discount),
+            discount
+        )
+    }
+}
 
 
 @BindingAdapter("app:addStatusBarPadding")
