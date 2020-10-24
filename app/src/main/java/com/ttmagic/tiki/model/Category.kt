@@ -1,8 +1,6 @@
 package com.ttmagic.tiki.model
 
-data class CategoryResponse(
-    val `data`: List<Category>
-)
+data class CategoryResponse(val data: List<Category>)
 
 data class Category(
     val id: Int,

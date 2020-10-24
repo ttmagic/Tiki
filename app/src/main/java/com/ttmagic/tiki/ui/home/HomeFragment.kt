@@ -26,19 +26,13 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         tvLogo.setAddStatusBarPadding(true)
-        swipeRefreshLayout.setDistanceToTriggerSync(400.dpToPx(requireContext()))
+        swipeRefreshLayout.setDistanceToTriggerSync(300.dpToPx(requireContext()))
         recyclerView.adapter = controller.adapter
 
         vm.refreshHome()
 
-        vm.onHomeScreenUpdate.observe(viewLifecycleOwner, Observer {
-            controller.setData(
-                vm.listBanners.value,
-                vm.listQuickLinks.value,
-                vm.listFlashDeal.value,
-                vm.listCategories.value,
-                vm.listProducts.value
-            )
+        vm.homeViewState.observe(viewLifecycleOwner, Observer {
+            controller.homeState = it
             swipeRefreshLayout.isRefreshing = false
         })
 
@@ -47,29 +41,44 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
 
         ivCart.setOnClickListener {
-            navigate("https://tiki.vn/checkout/cart")
+            navigate(url = "checkout/cart")
         }
 
         controller.onBannerClick = {
-            navigate(it.url)
+            navigate(withDomain = false, url = it.url)
         }
         controller.onQuickLinkClick = {
-            navigate(it.url)
+            navigate(withDomain = false,url = it.url)
         }
         controller.onFlashDealClick = {
-            navigate("https://tiki.vn/${it.product.url_path}")
+            navigate(url = it.product.url_path)
         }
         controller.onCategoryClick = {
-            navigate("https://tiki.vn/${it.url_key}")
+            navigate(url = it.url_key)
         }
         controller.onProductClick = {
-            navigate("https://tiki.vn/${it.url_key}.html")
+            navigate(url = "${it.url_key}.html")
         }
     }
 
-    private fun navigate(url: String) {
+    /**
+     * Use intent for view url
+     * @param withDomain include domain or not.
+     */
+    private fun navigate(withDomain: Boolean = true, url: String) {
         try {
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+            startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse(
+                        if (withDomain) {
+                            "https://tiki.vn/"
+                        } else {
+                            ""
+                        } + url
+                    )
+                )
+            )
         } catch (e: Exception) {
             e.printStackTrace()
         }

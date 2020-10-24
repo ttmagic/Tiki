@@ -30,7 +30,6 @@ abstract class ProductModel : BaseEpoxyModel() {
                 String.format(resources.getString(R.string.format_price), product.list_price)
             Glide.with(context)
                 .load(product.thumbnail_url)
-                .transform(RoundedCorners(10.dpToPx(context)))
                 .into(ivProduct)
         }
     }

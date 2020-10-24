@@ -19,7 +19,7 @@ class GetCategoryUseCase @Inject constructor(
     override fun execute(param: Unit): Flow<Result<List<Category>>> = flow {
         val res = tikiService.getCategories()
         if (res.data?.data.isNullOrEmpty()) {
-            emit(Result.Error(204))
+            if (res is Result.Error) emit(res as Result.Error) else emit(Result.Error(204))
         } else {
             emit(Result.Success(res.data!!.data.sortedBy { it.id }))
         }

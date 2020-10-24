@@ -22,18 +22,19 @@ class HomeVm
     private val getCategoryUseCase: GetCategoryUseCase,
     private val getProductUseCase: GetProductUseCase
 ) : AndroidViewModel(app) {
-    val listBanners = MutableLiveData<Result<List<Banner>>>()
-    val listQuickLinks = MutableLiveData<Result<List<QuickLink>>>()
-    val listFlashDeal = MutableLiveData<Result<List<FlashDeal>>>()
-    val listCategories = MutableLiveData<Result<List<Category>>>()
-    val listProducts = MutableLiveData<Result<List<Product>>>()
+    private val listBanners = MutableLiveData<Result<List<Banner>>>()
+    private val listQuickLinks = MutableLiveData<Result<List<QuickLink>>>()
+    private val listFlashDeal = MutableLiveData<Result<List<FlashDeal>>>()
+    private val listCategories = MutableLiveData<Result<List<Category>>>()
+    private val listProducts = MutableLiveData<Result<List<Product>>>()
 
-    val onHomeScreenUpdate = MediatorLiveData<String>().apply {
-        addSource(listBanners) { value = "listBanners: $it" }
-        addSource(listQuickLinks) { value = "listQuickLinks: $it" }
-        addSource(listFlashDeal) { value = "listFlashDeal: $it" }
-        addSource(listCategories) { value = "listCategories: $it" }
-        addSource(listProducts) { value = "listProducts: $it" }
+    val homeViewState = MediatorLiveData<HomeViewState>().apply {
+        value = HomeViewState()
+        addSource(listBanners) { value = value?.copy(listBanners = listBanners.value) }
+        addSource(listQuickLinks) { value = value?.copy(listQuickLinks = listQuickLinks.value) }
+        addSource(listFlashDeal) { value = value?.copy(listFlashDeal = listFlashDeal.value) }
+        addSource(listCategories) { value = value?.copy(listCategories = listCategories.value) }
+        addSource(listProducts) { value = value?.copy(listProducts = listProducts.value) }
     }
 
     fun refreshHome() = viewModelScope.launch {

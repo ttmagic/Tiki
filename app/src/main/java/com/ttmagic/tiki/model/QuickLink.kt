@@ -1,6 +1,6 @@
 package com.ttmagic.tiki.model
 
-data class QuickLinkResponse(val `data`: List<List<QuickLink>>)
+data class QuickLinkResponse(val data: List<List<QuickLink>>)
 
 data class QuickLink(
     val authentication: Boolean,

@@ -32,7 +32,6 @@ abstract class FlashDealModel : BaseEpoxyModel() {
             progressBar.progress = 100 - flashDeal.progress.percent
             Glide.with(context)
                 .load(flashDeal.product.thumbnail_url)
-                .transform(RoundedCorners(10.dpToPx(context)))
                 .into(ivProduct)
         }
     }

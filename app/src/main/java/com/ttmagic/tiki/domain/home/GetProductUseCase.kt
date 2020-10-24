@@ -20,7 +20,7 @@ class GetProductUseCase @Inject constructor(
     override fun execute(param: ProductQuery) = flow {
         val res = tikiService.getProducts(param.toQueryMap())
         if (res.data?.data.isNullOrEmpty()) {
-            emit(Result.Error(204))
+            if (res is Result.Error) emit(res as Result.Error) else emit(Result.Error(204))
         } else {
             emit(Result.Success(res.data!!.data))
         }

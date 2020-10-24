@@ -1,7 +1,7 @@
 package com.ttmagic.tiki.model
 
 data class ProductResponse(
-    val `data`: List<Product>,
+    val data: List<Product>,
     val paging: Paging,
     val total: Int
 )
@@ -14,21 +14,6 @@ data class Paging(
     val to: Int,
     val total: Int
 )
-
-/*data class Product(
-    val default_spid: Int,
-    val discount_rate: Int,
-    val id: Int,
-    val inventory_status: String,
-    val list_price: Int,
-    val name: String,
-    val price: Int,
-    val rating_average: Double,
-    val review_count: Int,
-    val thumbnail_url: String,
-    val type: String,
-    val url_key: String
-)*/
 
 data class Product(
     val discount_rate: Int,

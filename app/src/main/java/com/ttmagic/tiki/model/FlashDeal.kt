@@ -1,8 +1,6 @@
 package com.ttmagic.tiki.model
 
-data class FlashDealResponse(
-    val `data`: List<FlashDeal>
-)
+data class FlashDealResponse(val data: List<FlashDeal>)
 
 data class FlashDeal(
     val deal_id: Int,

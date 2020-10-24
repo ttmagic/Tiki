@@ -18,7 +18,7 @@ class GetQuickLinkUseCase @Inject constructor(
     override fun execute(param: Unit) = flow {
         val res = tikiService.getQuickLink()
         if (res.data?.data.isNullOrEmpty()) {
-            emit(Result.Error(204))
+            if (res is Result.Error) emit(res as Result.Error) else emit(Result.Error(204))
         } else {
             val allQuickLinks = arrayListOf<QuickLink>()
             res.data?.data?.forEach { allQuickLinks.addAll(it) }
