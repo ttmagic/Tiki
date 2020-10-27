@@ -3,15 +3,32 @@ package com.ttmagic.tiki
 import android.content.Context
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.DrawableRes
 import androidx.core.view.*
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.MutableLiveData
+import com.bumptech.glide.Glide
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 
 
+@BindingAdapter("app:glideSrc")
+fun ImageView.setGlideSrc(@DrawableRes drawableRes: Int) {
+    Glide.with(context)
+        .load(drawableRes)
+        .into(this)
+}
 
+@BindingAdapter("app:imgUrl")
+fun ImageView.setImgUrl(url: String) {
+    Glide.with(context)
+        .load(url)
+        .into(this)
+}
+
+@BindingAdapter("app:formatDiscount")
 fun TextView.formatDiscount(discount: Int?) {
     if (discount == null || discount == 0) {
         visibility = View.INVISIBLE
@@ -22,6 +39,11 @@ fun TextView.formatDiscount(discount: Int?) {
             discount
         )
     }
+}
+
+@BindingAdapter("app:formatPrice")
+fun TextView.formatPrice(price: Int) {
+    text = String.format(resources.getString(R.string.format_price), price)
 }
 
 

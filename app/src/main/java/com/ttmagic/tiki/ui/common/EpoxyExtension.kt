@@ -1,9 +1,11 @@
 package com.ttmagic.tiki.ui.common
 
-import com.airbnb.epoxy.CarouselModelBuilder
-import com.airbnb.epoxy.CarouselModel_
-import com.airbnb.epoxy.EpoxyController
-import com.airbnb.epoxy.EpoxyModel
+import com.airbnb.epoxy.*
+import com.ttmagic.tiki.R
+
+//This will find all layouts that starts with "epoxy" then it generates EpoxyBindingModel for the layout.
+@EpoxyDataBindingPattern(rClass = R::class, layoutPrefix = "epoxy")
+interface EpoxyBindingConfig
 
 /** For use in the buildModels method of EpoxyController. A shortcut for creating a Carousel model, initializing it, and adding it to the controller.
  *
@@ -33,13 +35,6 @@ inline fun <T> CarouselModelBuilder.withModelsFromIndexed(
     models(items.mapIndexed { index, item -> modelBuilder(index, item) })
 }
 
-inline fun <T> AutoScrollCarouselModelBuilder.withModelsFrom(
-    items: List<T>,
-    modelBuilder: (T) -> EpoxyModel<*>
-) {
-    models(items.map { modelBuilder(it) })
-}
-
 inline fun <T> AutoScrollCarouselModelBuilder.withModelsFromIndexed(
     items: List<T>,
     modelBuilder: (Int, T) -> EpoxyModel<*>
@@ -47,13 +42,6 @@ inline fun <T> AutoScrollCarouselModelBuilder.withModelsFromIndexed(
     models(items.mapIndexed { index, item -> modelBuilder(index, item) })
 }
 
-
-inline fun <T> TwoRowCarouselModelBuilder.withModelsFrom(
-    items: List<T>,
-    modelBuilder: (T) -> EpoxyModel<*>
-) {
-    models(items.map { modelBuilder(it) })
-}
 
 inline fun <T> TwoRowCarouselModelBuilder.withModelsFromIndexed(
     items: List<T>,

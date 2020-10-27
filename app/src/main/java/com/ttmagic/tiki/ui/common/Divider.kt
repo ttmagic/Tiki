@@ -12,7 +12,7 @@ import com.airbnb.epoxy.ModelView
 import com.ttmagic.tiki.dpToPx
 
 @ModelView(autoLayout = ModelView.Size.MATCH_WIDTH_WRAP_HEIGHT, fullSpan = true)
-class EpoxyDivider @JvmOverloads constructor(
+class Divider @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0

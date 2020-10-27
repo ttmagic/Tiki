@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="banner"
+            type="com.ttmagic.tiki.model.Banner" />
+
+        <variable
+            name="callback"
+            type="com.ttmagic.tiki.ui.common.OnItemClick" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:foreground="?selectableItemBackground"
+        android:onClick="@{()->callback.onItemClick(banner)}"
+        app:cardBackgroundColor="@color/light_gray"
+        app:cardCornerRadius="15dp"
+        app:cardElevation="0dp">
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminateTint="@color/blue_500"
+            android:indeterminateTintMode="src_in" />
+
+        <ImageView
+            android:id="@+id/iv"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            app:imgUrl="@{banner.image_url}"
+            android:scaleType="centerCrop" />
+
+    </androidx.cardview.widget.CardView>
+</layout>

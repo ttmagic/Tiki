@@ -47,5 +47,6 @@ dependencies {
     addDefaultDependencies()
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     implementation("com.airbnb.android:epoxy:4.1.0")
+    implementation("com.airbnb.android:epoxy-databinding:4.1.0")
     kapt("com.airbnb.android:epoxy-processor:4.1.0")
 }

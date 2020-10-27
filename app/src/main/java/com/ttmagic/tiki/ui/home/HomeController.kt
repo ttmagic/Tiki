@@ -1,14 +1,15 @@
-package com.ttmagic.tiki.ui.home.epoxy
+package com.ttmagic.tiki.ui.home
 
 import com.airbnb.epoxy.EpoxyController
-import com.ttmagic.tiki.R
+import com.ttmagic.tiki.*
 import com.ttmagic.tiki.base.Result
 import com.ttmagic.tiki.base.data
 import com.ttmagic.tiki.model.*
 import com.ttmagic.tiki.ui.common.*
 import javax.inject.Inject
 
-class HomeController @Inject constructor() : EpoxyController() {
+class HomeController @Inject constructor() : EpoxyController(),
+    OnItemClick {
 
     var onBannerClick: ((Banner) -> Unit)? = null
     var onQuickLinkClick: ((QuickLink) -> Unit)? = null
@@ -30,16 +31,26 @@ class HomeController @Inject constructor() : EpoxyController() {
         buildProducts()
     }
 
+    override fun onItemClick(item: Any) {
+        when (item) {
+            is Banner -> onBannerClick?.invoke(item)
+            is QuickLink -> onQuickLinkClick?.invoke(item)
+            is FlashDeal -> onFlashDealClick?.invoke(item)
+            is Category -> onCategoryClick?.invoke(item)
+            is Product -> onProductClick?.invoke(item)
+        }
+    }
+
     private fun buildBanners() {
         when (homeState?.listBanners) {
             is Result.Success -> {
                 autoScrollCarousel {
                     id("banner_carousel")
                     withModelsFromIndexed(homeState!!.listBanners!!.data!!) { i, item ->
-                        BannerModel_()
+                        BannerBindingModel_()
                             .id("banner_$i")
                             .banner(item)
-                            .onItemClick { onBannerClick?.invoke(it) }
+                            .callback(this@HomeController)
                     }
                 }
             }
@@ -49,10 +60,10 @@ class HomeController @Inject constructor() : EpoxyController() {
                 carousel {
                     id("banner_carousel")
                     withModelsFrom(arrayListOf(Banner())) {
-                        BannerModel_()
+                        BannerBindingModel_()
                             .id("banner_loading")
                             .banner(Banner())
-                            .onItemClick { onBannerClick?.invoke(it) }
+                            .callback(this@HomeController)
                     }
                 }
             }
@@ -68,9 +79,9 @@ class HomeController @Inject constructor() : EpoxyController() {
                     backgroundRes(R.color.white)
                     paddingDp(10)
                     withModelsFromIndexed(homeState!!.listQuickLinks!!.data!!) { i, item ->
-                        QuickLinkModel_().id("quicklink_$i")
+                        QuickLinkBindingModel_().id("quicklink_$i")
                             .quickLink(item)
-                            .onItemClick { onQuickLinkClick?.invoke(it) }
+                            .callback(this@HomeController)
                     }
                 }
             }
@@ -94,9 +105,9 @@ class HomeController @Inject constructor() : EpoxyController() {
                         view.setBackgroundResource(R.color.white)
                     }
                     withModelsFromIndexed(homeState!!.listFlashDeal!!.data!!) { i, item ->
-                        FlashDealModel_().id("flashdeal_$i")
+                        FlashDealBindingModel_().id("flashdeal_$i")
                             .flashDeal(item)
-                            .onItemClick { onFlashDealClick?.invoke(it) }
+                            .callback(this@HomeController)
                     }
                 }
                 addDivider()
@@ -122,9 +133,9 @@ class HomeController @Inject constructor() : EpoxyController() {
                     backgroundRes(R.color.white)
 
                     withModelsFromIndexed(homeState!!.listCategories!!.data!!) { i, item ->
-                        CategoryModel_().id("category_$i")
+                        CategoryBindingModel_().id("category_$i")
                             .category(item)
-                            .onItemClick { onCategoryClick?.invoke(it) }
+                            .callback(this@HomeController)
                     }
                 }
                 addDivider()
@@ -142,10 +153,10 @@ class HomeController @Inject constructor() : EpoxyController() {
                     id("product_grid")
                     backgroundRes(R.color.white)
                     withModelsFromIndexed(homeState!!.listProducts!!.data!!) { i, item ->
-                        ProductModel_()
+                        ProductBindingModel_()
                             .id("product_$i")
                             .product(item)
-                            .onItemClick { onProductClick?.invoke(it) }
+                            .callback(this@HomeController)
                     }
                 }
             }
@@ -156,7 +167,7 @@ class HomeController @Inject constructor() : EpoxyController() {
 
 
     private fun addDivider() {
-        epoxyDivider {
+        divider {
             id("divider")
             heightDp(10)
             backgroundRes(R.color.light_gray)

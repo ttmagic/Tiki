@@ -10,10 +10,9 @@ import androidx.lifecycle.Observer
 import com.ttmagic.tiki.R
 import com.ttmagic.tiki.dpToPx
 import com.ttmagic.tiki.setAddStatusBarPadding
-import com.ttmagic.tiki.ui.home.epoxy.HomeController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_home.*
-import kotlinx.android.synthetic.main.item_header.*
+import kotlinx.android.synthetic.main.layout_header.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -39,7 +38,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         swipeRefreshLayout.setOnRefreshListener {
             vm.refreshHome()
         }
-
         ivCart.setOnClickListener {
             navigate(url = "checkout/cart")
         }
@@ -48,7 +46,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             navigate(withDomain = false, url = it.url)
         }
         controller.onQuickLinkClick = {
-            navigate(withDomain = false,url = it.url)
+            navigate(withDomain = false, url = it.url)
         }
         controller.onFlashDealClick = {
             navigate(url = it.product.url_path)
