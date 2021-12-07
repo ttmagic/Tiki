@@ -31,7 +31,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         vm.refreshHome()
 
         vm.homeViewState.observe(viewLifecycleOwner, Observer {
-            controller.homeState = it
+            controller.setData(it)
             swipeRefreshLayout.isRefreshing = false
         })
 

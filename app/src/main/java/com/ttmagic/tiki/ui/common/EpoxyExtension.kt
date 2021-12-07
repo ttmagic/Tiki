@@ -1,7 +1,9 @@
 package com.ttmagic.tiki.ui.common
 
+import androidx.annotation.ColorRes
 import com.airbnb.epoxy.*
 import com.ttmagic.tiki.R
+import com.ttmagic.tiki.loading
 
 //This will find all layouts that starts with "epoxy" then it generates EpoxyBindingModel for the layout.
 @EpoxyDataBindingPattern(rClass = R::class, layoutPrefix = "epoxy")
@@ -55,4 +57,18 @@ inline fun <T> TwoRowGridModelBuilder.withModelsFromIndexed(
     modelBuilder: (Int, T) -> EpoxyModel<*>
 ) {
     models(items.mapIndexed { index, item -> modelBuilder(index, item) })
+}
+
+fun EpoxyController.divider(heightDp: Int = 10, @ColorRes color: Int = R.color.light_gray) {
+    divider {
+        id("divider")
+        heightDp(10)
+        backgroundRes(R.color.light_gray)
+    }
+}
+
+fun EpoxyController.loading() {
+    loading {
+        id("loading")
+    }
 }

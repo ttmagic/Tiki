@@ -1,15 +1,13 @@
 package com.ttmagic.tiki.ui.home
 
-import com.airbnb.epoxy.EpoxyController
+import com.airbnb.epoxy.TypedEpoxyController
 import com.ttmagic.tiki.*
 import com.ttmagic.tiki.base.Result
-import com.ttmagic.tiki.base.data
 import com.ttmagic.tiki.model.*
 import com.ttmagic.tiki.ui.common.*
 import javax.inject.Inject
 
-class HomeController @Inject constructor() : EpoxyController(),
-    OnItemClick {
+class HomeController @Inject constructor() : TypedEpoxyController<HomeViewState>(), OnItemClick {
 
     var onBannerClick: ((Banner) -> Unit)? = null
     var onQuickLinkClick: ((QuickLink) -> Unit)? = null
@@ -17,18 +15,14 @@ class HomeController @Inject constructor() : EpoxyController(),
     var onCategoryClick: ((Category) -> Unit)? = null
     var onProductClick: ((Product) -> Unit)? = null
 
-    var homeState: HomeViewState? = null
-        set(value) {
-            field = value
-            requestModelBuild()
+    override fun buildModels(data: HomeViewState?) {
+        data?.run {
+            listBanners?.let { buildBanners(it) }
+            listQuickLinks?.let { buildQuickLinks(it) }
+            listFlashDeal?.let { buildFlashDeal(it) }
+            listCategories?.let { buildCategories(it) }
+            listProducts?.let { buildProducts(it) }
         }
-
-    override fun buildModels() {
-        buildBanners()
-        buildQuickLinks()
-        buildFlashDeal()
-        buildCategories()
-        buildProducts()
     }
 
     override fun onItemClick(item: Any) {
@@ -41,12 +35,12 @@ class HomeController @Inject constructor() : EpoxyController(),
         }
     }
 
-    private fun buildBanners() {
-        when (homeState?.listBanners) {
+    private fun buildBanners(banners: Result<List<Banner>>) {
+        when (banners) {
             is Result.Success -> {
                 autoScrollCarousel {
                     id("banner_carousel")
-                    withModelsFromIndexed(homeState!!.listBanners!!.data!!) { i, item ->
+                    withModelsFromIndexed(banners.data) { i, item ->
                         BannerBindingModel_()
                             .id("banner_$i")
                             .banner(item)
@@ -54,7 +48,7 @@ class HomeController @Inject constructor() : EpoxyController(),
                     }
                 }
             }
-            is Result.Error -> {///Do nothing
+            is Result.Error -> {// Do nothing
             }
             else -> {
                 carousel {
@@ -70,32 +64,32 @@ class HomeController @Inject constructor() : EpoxyController(),
         }
     }
 
-    private fun buildQuickLinks() {
-        when (homeState?.listQuickLinks) {
-            is Result.Loading -> addLoading()
+    private fun buildQuickLinks(quickLinks: Result<List<QuickLink>>) {
+        when (quickLinks) {
+            is Result.Loading -> loading()
             is Result.Success -> {
                 twoRowCarousel {
                     id("quicklink_carousel")
                     backgroundRes(R.color.white)
                     paddingDp(10)
-                    withModelsFromIndexed(homeState!!.listQuickLinks!!.data!!) { i, item ->
+                    withModelsFromIndexed(quickLinks.data) { i, item ->
                         QuickLinkBindingModel_().id("quicklink_$i")
                             .quickLink(item)
                             .callback(this@HomeController)
                     }
                 }
+                divider()
             }
-            else -> {//Do nothing
+            else -> {   //Do nothing
             }
         }
 
     }
 
-    private fun buildFlashDeal() {
-        when (homeState?.listFlashDeal) {
-            is Result.Loading -> addLoading()
+    private fun buildFlashDeal(flashDeals: Result<List<FlashDeal>>) {
+        when (flashDeals) {
+            is Result.Loading -> loading()
             is Result.Success -> {
-                addDivider()
                 sectionHeader { id("flashdeal_header") }
                 carousel {
                     id("flashdeal_carousel")
@@ -104,23 +98,23 @@ class HomeController @Inject constructor() : EpoxyController(),
                     onBind { _, view, _ ->
                         view.setBackgroundResource(R.color.white)
                     }
-                    withModelsFromIndexed(homeState!!.listFlashDeal!!.data!!) { i, item ->
+                    withModelsFromIndexed(flashDeals.data) { i, item ->
                         FlashDealBindingModel_().id("flashdeal_$i")
                             .flashDeal(item)
                             .callback(this@HomeController)
                     }
                 }
-                addDivider()
+                divider()
             }
-            else -> {//Do nothing
+            else -> {   //Do nothing
             }
         }
 
     }
 
-    private fun buildCategories() {
-        when (homeState?.listCategories) {
-            is Result.Loading -> addLoading()
+    private fun buildCategories(categories: Result<List<Category>>) {
+        when (categories) {
+            is Result.Loading -> loading()
             is Result.Success -> {
                 sectionHeader {
                     id("category_header")
@@ -132,27 +126,27 @@ class HomeController @Inject constructor() : EpoxyController(),
                     numViewsToShowOnScreen(4f)
                     backgroundRes(R.color.white)
 
-                    withModelsFromIndexed(homeState!!.listCategories!!.data!!) { i, item ->
+                    withModelsFromIndexed(categories.data) { i, item ->
                         CategoryBindingModel_().id("category_$i")
                             .category(item)
                             .callback(this@HomeController)
                     }
                 }
-                addDivider()
+                divider()
             }
-            else -> {//Do nothing
+            else -> {   //Do nothing
             }
         }
     }
 
-    private fun buildProducts() {
-        when (homeState?.listProducts) {
-            is Result.Loading -> addLoading()
+    private fun buildProducts(products: Result<List<Product>>) {
+        when (products) {
+            is Result.Loading -> loading()
             is Result.Success -> {
                 twoRowGrid {
                     id("product_grid")
                     backgroundRes(R.color.white)
-                    withModelsFromIndexed(homeState!!.listProducts!!.data!!) { i, item ->
+                    withModelsFromIndexed(products.data) { i, item ->
                         ProductBindingModel_()
                             .id("product_$i")
                             .product(item)
@@ -160,23 +154,8 @@ class HomeController @Inject constructor() : EpoxyController(),
                     }
                 }
             }
-            else -> {
+            else -> {   // Do nothing
             }
-        }
-    }
-
-
-    private fun addDivider() {
-        divider {
-            id("divider")
-            heightDp(10)
-            backgroundRes(R.color.light_gray)
-        }
-    }
-
-    private fun addLoading() {
-        loading {
-            id("loading")
         }
     }
 

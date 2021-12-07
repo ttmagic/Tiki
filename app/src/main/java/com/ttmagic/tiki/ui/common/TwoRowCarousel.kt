@@ -23,6 +23,7 @@ class TwoRowCarousel @JvmOverloads constructor(
 
     init {
         isNestedScrollingEnabled = false
+        setDefaultGlobalSnapHelperFactory(null)
     }
 
     override fun createLayoutManager(): LayoutManager {
