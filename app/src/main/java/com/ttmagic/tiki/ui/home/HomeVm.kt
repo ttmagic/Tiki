@@ -11,6 +11,7 @@ import com.ttmagic.tiki.domain.home.*
 import com.ttmagic.tiki.model.*
 import com.ttmagic.tiki.onCollectPostValue
 import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 
 class HomeVm
@@ -44,14 +45,10 @@ class HomeVm
         listCategories.value = null
         listProducts.value = null
 
-        async {
-            async { getBanner() }
-            async { getQuickLink() }
-        }.invokeOnCompletion {
-            getFlashDeal()
-            getCategories()
-            getProducts()
-        }
+        listOf(async { getBanner() }, async { getQuickLink() }).awaitAll()
+        getFlashDeal()
+        getCategories()
+        getProducts()
     }
 
     private suspend fun getBanner() {
@@ -62,15 +59,15 @@ class HomeVm
         getQuickLinkUseCase(Unit).onCollectPostValue(listQuickLinks)
     }
 
-    private fun getFlashDeal() = viewModelScope.launch {
+    private suspend fun getFlashDeal() {
         getFlashDealUseCase(Unit).onCollectPostValue(listFlashDeal)
     }
 
-    private fun getCategories() = viewModelScope.launch {
+    private suspend fun getCategories() {
         getCategoryUseCase(Unit).onCollectPostValue(listCategories)
     }
 
-    private fun getProducts() = viewModelScope.launch {
+    private suspend fun getProducts() {
         val param = ProductQuery(page = 0, limit = 20)
         getProductUseCase(param).onCollectPostValue(listProducts)
     }
