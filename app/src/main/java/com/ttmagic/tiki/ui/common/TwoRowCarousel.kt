@@ -9,6 +9,7 @@ import com.airbnb.epoxy.AfterPropsSet
 import com.airbnb.epoxy.CallbackProp
 import com.airbnb.epoxy.Carousel
 import com.airbnb.epoxy.ModelView
+import com.ttmagic.tiki.R
 
 @ModelView(autoLayout = ModelView.Size.MATCH_WIDTH_WRAP_HEIGHT, saveViewState = true)
 class TwoRowCarousel @JvmOverloads constructor(
@@ -18,12 +19,13 @@ class TwoRowCarousel @JvmOverloads constructor(
 ) : Carousel(context, attrs, defStyleAttr) {
 
     @DrawableRes
-    var backgroundRes: Int? = null
+    var backgroundRes: Int? = R.color.white
         @CallbackProp set
 
     init {
         isNestedScrollingEnabled = false
         setDefaultGlobalSnapHelperFactory(null)
+        backgroundRes?.let { setBackgroundResource(it) }
     }
 
     override fun createLayoutManager(): LayoutManager {

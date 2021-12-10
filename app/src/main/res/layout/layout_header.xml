@@ -20,19 +20,10 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.constraintlayout.helper.widget.Flow
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="10dp"
-        app:constraint_referenced_ids="ivCart"
-        app:flow_horizontalGap="15dp"
-        app:flow_wrapMode="aligned"
-        app:layout_constraintBottom_toBottomOf="@+id/tvLogo"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/tvLogo" />
-
-
     <ImageView
+        app:layout_constraintTop_toTopOf="@id/tvLogo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/tvLogo"
         android:id="@+id/ivCart"
         android:layout_width="30dp"
         android:layout_height="30dp"

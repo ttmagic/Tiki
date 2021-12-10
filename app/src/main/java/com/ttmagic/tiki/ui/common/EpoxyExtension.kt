@@ -23,21 +23,21 @@ inline fun EpoxyController.carousel(modelInitializer: CarouselModelBuilder.() ->
  * @param items The items to transform to models
  * @param modelBuilder A function that take an item and returns a new EpoxyModel for that item.
  */
-inline fun <T> CarouselModelBuilder.withModelsFrom(
+inline fun <T> CarouselModelBuilder.map(
     items: List<T>,
     modelBuilder: (T) -> EpoxyModel<*>
 ) {
     models(items.map { modelBuilder(it) })
 }
 
-inline fun <T> CarouselModelBuilder.withModelsFromIndexed(
+inline fun <T> CarouselModelBuilder.mapIndexed(
     items: List<T>,
     modelBuilder: (Int, T) -> EpoxyModel<*>
 ) {
     models(items.mapIndexed { index, item -> modelBuilder(index, item) })
 }
 
-inline fun <T> AutoScrollCarouselModelBuilder.withModelsFromIndexed(
+inline fun <T> AutoScrollCarouselModelBuilder.mapIndexed(
     items: List<T>,
     modelBuilder: (Int, T) -> EpoxyModel<*>
 ) {
@@ -45,14 +45,14 @@ inline fun <T> AutoScrollCarouselModelBuilder.withModelsFromIndexed(
 }
 
 
-inline fun <T> TwoRowCarouselModelBuilder.withModelsFromIndexed(
+inline fun <T> TwoRowCarouselModelBuilder.mapIndexed(
     items: List<T>,
     modelBuilder: (Int, T) -> EpoxyModel<*>
 ) {
     models(items.mapIndexed { index, item -> modelBuilder(index, item) })
 }
 
-inline fun <T> TwoRowGridModelBuilder.withModelsFromIndexed(
+inline fun <T> TwoRowGridModelBuilder.mapIndexed(
     items: List<T>,
     modelBuilder: (Int, T) -> EpoxyModel<*>
 ) {

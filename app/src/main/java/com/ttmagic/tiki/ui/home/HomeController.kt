@@ -40,26 +40,26 @@ class HomeController @Inject constructor() : TypedEpoxyController<HomeViewState>
             is Result.Success -> {
                 autoScrollCarousel {
                     id("banner_carousel")
-                    withModelsFromIndexed(banners.data) { i, item ->
+                    mapIndexed(banners.data) { i, item ->
                         BannerBindingModel_()
-                            .id("banner_$i")
+                            .id(i)
                             .banner(item)
                             .callback(this@HomeController)
                     }
                 }
             }
-            is Result.Error -> {// Do nothing
-            }
-            else -> {
+            is Result.Loading -> {
                 carousel {
                     id("banner_carousel")
-                    withModelsFrom(arrayListOf(Banner())) {
+                    map(arrayListOf(Banner())) {
                         BannerBindingModel_()
                             .id("banner_loading")
                             .banner(Banner())
                             .callback(this@HomeController)
                     }
                 }
+            }
+            else -> {   // Do nothing
             }
         }
     }
@@ -70,17 +70,17 @@ class HomeController @Inject constructor() : TypedEpoxyController<HomeViewState>
             is Result.Success -> {
                 twoRowCarousel {
                     id("quicklink_carousel")
-                    backgroundRes(R.color.white)
                     paddingDp(10)
-                    withModelsFromIndexed(quickLinks.data) { i, item ->
-                        QuickLinkBindingModel_().id("quicklink_$i")
+                    mapIndexed(quickLinks.data) { i, item ->
+                        QuickLinkBindingModel_()
+                            .id(i)
                             .quickLink(item)
                             .callback(this@HomeController)
                     }
                 }
                 divider()
             }
-            else -> {   //Do nothing
+            else -> {   // Do nothing
             }
         }
 
@@ -98,18 +98,18 @@ class HomeController @Inject constructor() : TypedEpoxyController<HomeViewState>
                     onBind { _, view, _ ->
                         view.setBackgroundResource(R.color.white)
                     }
-                    withModelsFromIndexed(flashDeals.data) { i, item ->
-                        FlashDealBindingModel_().id("flashdeal_$i")
+                    mapIndexed(flashDeals.data) { i, item ->
+                        FlashDealBindingModel_()
+                            .id(i)
                             .flashDeal(item)
                             .callback(this@HomeController)
                     }
                 }
                 divider()
             }
-            else -> {   //Do nothing
+            else -> {   // Do nothing
             }
         }
-
     }
 
     private fun buildCategories(categories: Result<List<Category>>) {
@@ -124,17 +124,16 @@ class HomeController @Inject constructor() : TypedEpoxyController<HomeViewState>
                     id("category_carousel")
                     paddingDp(5)
                     numViewsToShowOnScreen(4f)
-                    backgroundRes(R.color.white)
-
-                    withModelsFromIndexed(categories.data) { i, item ->
-                        CategoryBindingModel_().id("category_$i")
+                    mapIndexed(categories.data) { i, item ->
+                        CategoryBindingModel_()
+                            .id(i)
                             .category(item)
                             .callback(this@HomeController)
                     }
                 }
                 divider()
             }
-            else -> {   //Do nothing
+            else -> {   // Do nothing
             }
         }
     }
@@ -145,10 +144,9 @@ class HomeController @Inject constructor() : TypedEpoxyController<HomeViewState>
             is Result.Success -> {
                 twoRowGrid {
                     id("product_grid")
-                    backgroundRes(R.color.white)
-                    withModelsFromIndexed(products.data) { i, item ->
+                    mapIndexed(products.data) { i, item ->
                         ProductBindingModel_()
-                            .id("product_$i")
+                            .id(i)
                             .product(item)
                             .callback(this@HomeController)
                     }
